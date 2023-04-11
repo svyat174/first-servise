@@ -1,41 +1,35 @@
 {
-  "name": "account",
-  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "root": "apps/account",
   "sourceRoot": "apps/account/src",
   "projectType": "application",
   "targets": {
     "build": {
-      "executor": "@nrwl/webpack:webpack",
+      "executor": "@nrwl/node:webpack",
       "outputs": ["{options.outputPath}"],
-      "defaultConfiguration": "production",
       "options": {
-        "target": "node",
-        "compiler": "tsc",
         "outputPath": "dist/apps/account",
         "main": "apps/account/src/main.ts",
         "tsConfig": "apps/account/tsconfig.app.json",
-        "assets": ["apps/account/src/assets"],
-        "isolatedConfig": true,
-        "webpackConfig": "apps/account/webpack.config.js"
+        "assets": ["apps/account/src/assets"]
       },
       "configurations": {
-        "development": {},
-        "production": {}
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false,
+          "fileReplacements": [
+            {
+              "replace": "apps/account/src/environments/environment.ts",
+              "with": "apps/account/src/environments/environment.prod.ts"
+            }
+          ]
+        }
       }
     },
     "serve": {
-      "executor": "@nrwl/js:node",
-      "defaultConfiguration": "development",
+      "executor": "@nrwl/node:node",
       "options": {
         "buildTarget": "account:build"
-      },
-      "configurations": {
-        "development": {
-          "buildTarget": "account:build:development"
-        },
-        "production": {
-          "buildTarget": "account:build:production"
-        }
       }
     },
     "lint": {
@@ -47,16 +41,10 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "outputs": ["coverage/apps/account"],
       "options": {
-        "jestConfig": "apps/account/jest.config.ts",
+        "jestConfig": "apps/account/jest.config.js",
         "passWithNoTests": true
-      },
-      "configurations": {
-        "ci": {
-          "ci": true,
-          "codeCoverage": true
-        }
       }
     }
   },
