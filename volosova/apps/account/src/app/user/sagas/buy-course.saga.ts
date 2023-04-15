@@ -22,7 +22,7 @@ export class BuyCourseSaga {
 			case PurchaseState.Purchased:
 				this.state = new BuyCourseSagaStatePurchased();
 				break;
-			case PurchaseState.Cenceled:
+			case PurchaseState.Canceled:
 				this.state = new BuyCourseSagaStateCanceled();
 				break;
 		}

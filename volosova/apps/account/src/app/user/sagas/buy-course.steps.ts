@@ -26,8 +26,8 @@ export class BuyCourseSagaStateStarted extends BuyCourseSagaState {
 	public checkPayment(): Promise<{ user: UserEntity; status: PaymentStatus }> {
 		throw new Error('Нельзя проверить платёж, который не начался');
 	}
-	public async cencel(): Promise<{ user: UserEntity; }> {
-		this.saga.setState(PurchaseState.Cenceled, this.saga.courseId);
+	public async cancel(): Promise<{ user: UserEntity; }> {
+		this.saga.setState(PurchaseState.Canceled, this.saga.courseId);
 		return { user: this.saga.user };
 	}
 }
@@ -42,7 +42,7 @@ export class BuyCourseSagaStateWaitingForPayment extends BuyCourseSagaState {
 			courseId: this.saga.courseId
 		});
 		if (status === 'canceled') {
-			this.saga.setState(PurchaseState.Cenceled, this.saga.courseId);
+			this.saga.setState(PurchaseState.Canceled, this.saga.courseId);
 			return { user: this.saga.user, status: 'canceled' };
 		}
 		if (status === 'success') {
@@ -51,7 +51,7 @@ export class BuyCourseSagaStateWaitingForPayment extends BuyCourseSagaState {
 		this.saga.setState(PurchaseState.Purchased, this.saga.courseId);
 		return { user: this.saga.user, status: 'progress' };
 	}
-	public cencel(): Promise<{ user: UserEntity; }> {
+	public cancel(): Promise<{ user: UserEntity; }> {
 		throw new Error('Нельзя отменить платёж в процессе');
 	}
 }
@@ -63,7 +63,7 @@ export class BuyCourseSagaStatePurchased extends BuyCourseSagaState {
 	public checkPayment(): Promise<{ user: UserEntity; status: PaymentStatus }> {
 		throw new Error('Нельзя проверить платёж по купленному курсу');
 	}
-	public cencel(): Promise<{ user: UserEntity; }> {
+	public cancel(): Promise<{ user: UserEntity; }> {
 		throw new Error('Нельзя отменить купленный курс');
 	}
 }
@@ -76,7 +76,7 @@ export class BuyCourseSagaStateCanceled extends BuyCourseSagaState {
 	public checkPayment(): Promise<{ user: UserEntity; status: PaymentStatus }> {
 		throw new Error('Нельзя проверить платёж по отменённому курсу');
 	}
-	public cencel(): Promise<{ user: UserEntity; }> {
+	public cancel(): Promise<{ user: UserEntity; }> {
 		throw new Error('Нельзя отменить откменённый курс');
 	}
 }

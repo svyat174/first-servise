@@ -29,7 +29,7 @@ export class UserEntity implements IUser {
 			});
 			return this;
 		}
-		if (state === PurchaseState.Cenceled) {
+		if (state === PurchaseState.Canceled) {
 			this.courses = this.courses.filter(c => c.courseId !== courseId);
 			return this;
 		}
