@@ -1,5 +1,5 @@
 import { IUser } from '@purple/interfaces';
-import { IsEmail, IsString } from 'class-validator';
+import { IsString } from 'class-validator';
 
 export namespace AccountUserInfo {
 	export const topic = 'account.user-info.query';

@@ -1,24 +1,27 @@
 import { Body, Controller } from '@nestjs/common';
+import { AccountBuyCourse, AccountChangeProfile, AccountCheckPayment } from '@purple/contracts';
 import { RMQRoute, RMQValidate } from 'nestjs-rmq';
-import { AccountChangeProfile, AccountRegister, AccountUserCourses } from '@purple/contracts';
-import { UserRepository } from './repositories/user.repository';
-import { UserEntity } from './entities/user.entity';
+import { UserService } from './user.service';
 
 @Controller()
 export class UserCommands {
-	constructor(private readonly userRepository: UserRepository) {}
+	constructor(private readonly userService: UserService) {}
 
 	@RMQValidate()
 	@RMQRoute(AccountChangeProfile.topic)
-	async userCourses(@Body() { user, id }: AccountChangeProfile.Request): Promise<AccountChangeProfile.Response> {
-		const existedUser = await this.userRepository.findUserById(id);
+	async changeProfile(@Body() { user, id }: AccountChangeProfile.Request): Promise<AccountChangeProfile.Response> {
+		return this.userService.changeProfile(user, id);
+	}
 
-		if (!existedUser) {
-			throw new Error('User not found');
-		}
+	@RMQValidate()
+	@RMQRoute(AccountBuyCourse.topic)
+	async buyCourse(@Body() { userId, courseId }: AccountBuyCourse.Request): Promise<AccountBuyCourse.Response> {
+		return this.userService.buyCourse(userId, courseId);
+	}
 
-		const userEntity = new UserEntity(existedUser).updateProfile(user.displayName);
-		await this.userRepository.updateUser(userEntity);
-		return {}
+	@RMQValidate()
+	@RMQRoute(AccountCheckPayment.topic)
+	async checkPayment(@Body() { userId, courseId }: AccountCheckPayment.Request): Promise<AccountCheckPayment.Response> {
+		return this.userService.checkPayments(userId, courseId);
 	}
 }

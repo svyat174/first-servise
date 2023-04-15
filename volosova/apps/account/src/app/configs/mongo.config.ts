@@ -17,4 +17,4 @@ const getMongoString = (configService: ConfigService) =>
 	':' +
 	configService.get('MONGO_PORT') +
 	'/' +
-	configService.get('MONGO_DATABASE');
+	configService.get('MONGO_DATABASE')

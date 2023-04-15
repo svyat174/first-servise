@@ -7,7 +7,7 @@ export namespace AccountChangeProfile {
 	export class Request {
 		@IsString()
 		id: string;
-		
+
 		@IsString()
 		user: Pick<IUser, 'displayName'>;
 	}
