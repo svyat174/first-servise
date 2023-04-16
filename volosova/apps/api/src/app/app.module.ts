@@ -7,14 +7,16 @@ import { getJWTConfig } from './configs/jwt.config';
 import { getRMQConfig } from './configs/rmq.config';
 import { AuthController } from './controllers/auth.controller';
 import { UserController } from './controllers/user.controller';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
 	imports: [
 		ConfigModule.forRoot({ envFilePath: 'envs/.api.env', isGlobal: true }),
 		RMQModule.forRootAsync(getRMQConfig()),
 		JwtModule.registerAsync(getJWTConfig()),
-		PassportModule
+		PassportModule,
+		ScheduleModule.forRoot(),
 	],
-	controllers: [AuthController, UserController]
+	controllers: [AuthController, UserController],
 })
 export class AppModule {}
